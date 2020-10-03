@@ -50,8 +50,7 @@ function getTimeDifference(start) {
     }
 
     let timeDelta = Date.now() - publishedDate;
-    let dateobject = new Date(timeDelta);
-
+    
     return " • Released " + secondsToYMD(timeDelta / 1000);
 }
 
