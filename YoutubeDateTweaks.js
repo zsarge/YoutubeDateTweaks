@@ -38,43 +38,43 @@ function replaceText() {
         }
     }
 
-    let timeDifference = getTimeDifference(publishedDate);
+    let differenceText = getDifferenceText(publishedDate);
 
-    let newTitle = publishedDate + timeDifference;
+    let newTitle = publishedDate + differenceText;
     x[DATE_ELEMENT_INDEX].textContent = newTitle;
     dateText = newTitle;
 }
 
-function getTimeDifference(start) {
+function getDifferenceText(start) {
     let publishedDate = Date.parse(start);
     if (publishedDate == null || publishedDate == "") {
         return "";
     }
 
     let timeDelta = Date.now() - publishedDate;
-    
+
     return " • Released " + secondsToYMD(timeDelta / 1000);
 }
 
 function secondsToYMD(seconds) {
     seconds = Number(seconds);
-    let secondsInADay   = 3600 * 24;
-    let secondsInAMonth = secondsInADay * 30; // approximate months
-    let secondsInAYear  = secondsInADay * 365;
+    let secondsInADay   = 60 * 60 * 24;
+    let secondsInAMonth = secondsInADay * 30.416666; // average days in a month
+    let secondsInAYear  = secondsInADay * 364.99999; // average days in a year
 
     let years  = Math.floor(seconds / secondsInAYear);
     seconds -= years * secondsInAYear;
     let months = Math.floor(seconds / secondsInAMonth);
     seconds -= months * secondsInAMonth;
     let days   = Math.floor(seconds / secondsInADay);
+    days -= 1; // account for today
 
-    // Is this an abuse of ternary operators?
-    // Yes, absolutely
     let dayString   = days   > 0 ? days   + (days   == 1 ? " day "   : " days "  ) : "";
     let monthString = months > 0 ? months + (months == 1 ? " month " : " months ") : "";
     let yearString  = years  > 0 ? years  + (years  == 1 ? " year "  : " years " ) : "";
 
     let result = yearString + monthString + dayString;
+
     if (result == "") {
         result = "today";
     } else {
