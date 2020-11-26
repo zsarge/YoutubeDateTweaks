@@ -67,7 +67,6 @@ function secondsToYMD(seconds) {
     let months = Math.floor(seconds / secondsInAMonth);
     seconds -= months * secondsInAMonth;
     let days   = Math.floor(seconds / secondsInADay);
-    days -= 1; // account for today
 
     let dayString   = days   > 0 ? days   + (days   == 1 ? " day "   : " days "  ) : "";
     let monthString = months > 0 ? months + (months == 1 ? " month " : " months ") : "";
