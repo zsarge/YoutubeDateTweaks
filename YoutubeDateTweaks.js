@@ -1,14 +1,16 @@
 // ==UserScript==
 // @name         Youtube Date Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @version      1.0
+// @description  Add the time since a youtube video was published next to the date
+// @author       Zack Sargent
 // @match        https://www.youtube.com/*
-// @grant        none
 // ==/UserScript==
 
-const dateElementIndex = 14;
+// DATE_ELEMENT_INDEX can be obtained by manually looking through
+// the DOM. I considered dynamically finding the date element, but
+// keeping a constant index seems quicker, and has worked for several months.
+const DATE_ELEMENT_INDEX = 14;
 var dateText = "";
 
 window.setInterval(() => {
@@ -16,7 +18,7 @@ window.setInterval(() => {
     // because most youtube transitions do not reload the page.
     if (window.location.href.includes("watch")) {
         let dateElement = document.getElementsByClassName("style-scope ytd-video-primary-info-renderer");
-        let dateContent = dateElement[dateElementIndex].textContent;
+        let dateContent = dateElement[DATE_ELEMENT_INDEX].textContent;
         if (dateContent != dateText) {
             replaceText();
         }
@@ -25,7 +27,7 @@ window.setInterval(() => {
 
 function replaceText() {
     let x = document.getElementsByClassName("style-scope ytd-video-primary-info-renderer");
-    let publishedDate = x[dateElementIndex].textContent;
+    let publishedDate = x[DATE_ELEMENT_INDEX].textContent;
 
     if (publishedDate.includes("Released")) {
         // slice correct date, because youtube does not reload the page when clicking on next video
@@ -39,7 +41,7 @@ function replaceText() {
     let timeDifference = getTimeDifference(publishedDate);
 
     let newTitle = publishedDate + timeDifference;
-    x[dateElementIndex].textContent = newTitle;
+    x[DATE_ELEMENT_INDEX].textContent = newTitle;
     dateText = newTitle;
 }
 
